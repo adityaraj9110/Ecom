@@ -97,7 +97,7 @@ export const ProductListingPage: React.FC = () => {
       </div>
 
       <div className={styles.layout}>
-        {/* Sidebar Filters */}
+        {/* Sidebar Filters - Desktop */}
         <aside className={styles.sidebar}>
           <div className={styles.filterGroup}>
             <h3>Categories</h3>
@@ -125,13 +125,30 @@ export const ProductListingPage: React.FC = () => {
         </aside>
 
         {/* Product Grid */}
-        <div>
+        <div className={styles.mainContent}>
+          {/* Mobile Category Select */}
+          <div className={styles.mobileFilters}>
+            <label htmlFor="category-select">Category:</label>
+            <select 
+              id="category-select"
+              className={styles.mobileSelect} 
+              value={selectedCategory} 
+              onChange={(e) => handleCategoryClick(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {categories?.map((cat) => (
+                <option key={cat.slug} value={cat.slug}>{cat.name}</option>
+              ))}
+            </select>
+          </div>
+
           {data && !isLoading && (
             <p className={styles.resultInfo}>
               Showing {sortedProducts.length} of {data.total} products
               {debouncedSearch && <> for "<strong>{debouncedSearch}</strong>"</>}
             </p>
           )}
+
 
           <div className={styles.productsGrid}>
             {isLoading
