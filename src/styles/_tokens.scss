@@ -75,4 +75,44 @@
 
   // Layout
   --max-width-container: 1200px;
+
+  --color-bg: var(--color-white);
+  --color-text: var(--color-gray-900);
+  --color-text-muted: var(--color-gray-500);
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --img-blend: multiply;
 }
+
+[data-theme='dark'] {
+  --color-primary: #ffffff;
+  --color-primary-hover: #f4f4f4;
+  --color-secondary: #27272a;
+  
+  --color-white: #121212;
+  --color-black: #ffffff;
+
+  --color-gray-50: #1a1a1c;
+  --color-gray-100: #27272a;
+  --color-gray-200: #3f3f46;
+  --color-gray-300: #52525b;
+  --color-gray-400: #71717a;
+  --color-gray-500: #a1a1aa;
+  --color-gray-600: #d4d4d8;
+  --color-gray-700: #e4e4e7;
+  --color-gray-800: #f4f4f5;
+  --color-gray-900: #ffffff;
+  
+  --border-color-base: #3f3f46;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+
+  --color-bg: #121212;
+  --color-text: #ffffff;
+  --color-text-muted: #a1a1aa;
+  --header-bg: rgba(18, 18, 18, 0.85);
+  --img-blend: normal;
+}
+
+
+

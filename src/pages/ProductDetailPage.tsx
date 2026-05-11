@@ -5,13 +5,19 @@ import { useCartStore } from '@features/cart/store/cartStore';
 import { useWishlistStore } from '@features/wishlist/store/wishlistStore';
 import { useToastStore } from '@store/toastStore';
 import { Button } from '@components/ui/Button/Button';
-import { Star, ArrowLeft, ShoppingBag, Heart, Repeat } from 'lucide-react';
+import { Star, ArrowLeft, ShoppingBag, Heart, Repeat, Share2 } from 'lucide-react';
+
 import { useComparisonStore } from '@features/products/store/comparisonStore';
+import { useRecentlyViewedStore } from '@features/products/store/recentlyViewedStore';
+import { ImageZoom } from '@components/ui/ImageZoom/ImageZoom';
+
+
 
 export const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: product, isLoading, error } = useProduct(Number(id));
+  const addItemToRecentlyViewed = useRecentlyViewedStore((state) => state.addItem);
   const addItem = useCartStore((state) => state.addItem);
   const { toggleItem, isInWishlist } = useWishlistStore();
   const { addItem: addToCompare, isInComparison, items: compareItems } = useComparisonStore();
@@ -20,6 +26,13 @@ export const ProductDetailPage: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('M');
   const [selectedColor, setSelectedColor] = useState('Charcoal');
+
+  React.useEffect(() => {
+    if (product) {
+      addItemToRecentlyViewed(product);
+    }
+  }, [product, addItemToRecentlyViewed]);
+
 
   if (isLoading) return <div style={{ padding: '4rem', textAlign: 'center' }}>Loading product details...</div>;
   if (error || !product) return <div style={{ padding: '4rem', textAlign: 'center', color: 'red' }}>Product not found</div>;
@@ -35,9 +48,8 @@ export const ProductDetailPage: React.FC = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'start' }}>
         {/* Image Gallery */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ background: 'var(--color-gray-50)', padding: '2rem', borderRadius: 'var(--border-radius-lg)', display: 'flex', justifyContent: 'center' }}>
-            <img src={currentImage} alt={product.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'contain', mixBlendMode: 'multiply' }} />
-          </div>
+          <ImageZoom src={currentImage} alt={product.title} />
+
           {product.images.length > 1 && (
             <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto' }}>
               {product.images.map((img, idx) => (
@@ -50,7 +62,9 @@ export const ProductDetailPage: React.FC = () => {
                     borderRadius: 'var(--border-radius-md)', cursor: 'pointer'
                   }}
                 >
-                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
+                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'var(--img-blend)' as any }} />
+
+
                 </button>
               ))}
             </div>
@@ -114,9 +128,9 @@ export const ProductDetailPage: React.FC = () => {
                     onClick={() => setSelectedSize(size)}
                     style={{
                       width: '44px', height: '44px', borderRadius: 'var(--border-radius-md)', border: '1px solid',
-                      borderColor: selectedSize === size ? 'var(--color-primary)' : 'var(--border-color-base)',
-                      background: selectedSize === size ? 'var(--color-primary)' : 'white',
-                      color: selectedSize === size ? 'white' : 'var(--color-gray-700)',
+                      borderColor: selectedSize === size ? 'var(--color-text)' : 'var(--border-color-base)',
+                      background: selectedSize === size ? 'var(--color-text)' : 'transparent',
+                      color: selectedSize === size ? 'var(--color-bg)' : 'var(--color-text)',
                       fontWeight: '600', cursor: 'pointer', transition: 'var(--transition-base)'
                     }}
                   >
@@ -139,13 +153,14 @@ export const ProductDetailPage: React.FC = () => {
                     onClick={() => setSelectedColor(color.name)}
                     style={{
                       width: '32px', height: '32px', borderRadius: 'var(--border-radius-full)', border: '2px solid',
-                      borderColor: selectedColor === color.name ? 'var(--color-primary)' : 'transparent',
+                      borderColor: selectedColor === color.name ? 'var(--color-text)' : 'transparent',
                       background: color.value, cursor: 'pointer', transition: 'var(--transition-base)',
-                      boxShadow: 'inset 0 0 0 2px white'
+                      boxShadow: 'inset 0 0 0 2px var(--color-bg)'
                     }}
                     title={color.name}
                   />
                 ))}
+
               </div>
             </div>
           </div>
@@ -200,6 +215,25 @@ export const ProductDetailPage: React.FC = () => {
               aria-label="Add to comparison"
             >
               <Repeat size={20} />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: product.title,
+                    text: product.description,
+                    url: window.location.href,
+                  }).catch(console.error);
+                } else {
+                  navigator.clipboard.writeText(window.location.href);
+                  addToast('Link copied to clipboard', 'success');
+                }
+              }}
+              aria-label="Share product"
+            >
+              <Share2 size={20} />
             </Button>
           </div>
         </div>

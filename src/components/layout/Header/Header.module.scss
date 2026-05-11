@@ -2,8 +2,9 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: var(--header-bg);
   backdrop-filter: blur(12px);
+
   border-bottom: 1px solid var(--border-color-base);
   padding: var(--spacing-3) 0;
 }
@@ -36,19 +37,21 @@
   a {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
-    color: var(--color-gray-500);
+    color: var(--color-text-muted);
     transition: var(--transition-base);
     padding: var(--spacing-1) 0;
 
     &:hover {
-      color: var(--color-primary);
+      color: var(--color-text);
     }
   }
 
   .active {
-    color: var(--color-primary);
+    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
   }
 }
+
 
 .actions {
   display: flex;
@@ -180,3 +183,43 @@
     width: 140px;
   }
 }
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--border-color-base);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-gray-50);
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    background: var(--color-gray-50);
+    border-radius: var(--border-radius-sm);
+  }
+}
+

@@ -1,6 +1,6 @@
 # 🛍️ ShopSphere — Production-Ready E-Commerce Platform
 
-> A modern, fully-featured e-commerce application built for the Frontend Engineering SDE-2 assessment. Engineered with scalability, maintainability, and developer experience at its core — and topped with an AI-powered shopping assistant chatbot.
+> A modern, fully-featured e-commerce application built for the Frontend Engineering SDE-2 assessment. Engineered with scalability, maintainability, and developer experience at its core.
 
 ---
 
@@ -12,7 +12,7 @@
 - [Tech Stack & Decisions](#tech-stack--decisions)
 - [Architecture Overview](#architecture-overview)
 - [Project Structure](#project-structure)
-- [AI Chatbot — ShopBot](#ai-chatbot--shopbot)
+
 - [State Management Strategy](#state-management-strategy)
 - [Code Quality & Scalability Standards](#code-quality--scalability-standards)
 - [Getting Started](#getting-started)
@@ -37,7 +37,7 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 - A full product browsing experience with advanced filtering, search, and pagination
 - A complete cart and checkout flow with form validation
 - A wishlist, product comparison, and review system
-- An **AI-powered shopping assistant chatbot** (ShopBot) embedded at the bottom-right of every page — users can search, ask questions, and get product recommendations in natural language
+
 - Authentication simulation (login/register with persisted session)
 - Responsive design with accessibility (WCAG AA) baked in from the start
 - Clean, layered architecture that mirrors how a real production team would build this
@@ -68,17 +68,6 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 | Checkout        | Multi-step flow: Address → Shipping → Payment → Review → Confirmation |
 | Form Validation | Field-level validation with react-hook-form + Zod schemas             |
 | Order Summary   | Live price calculations, discount codes, estimated tax                |
-
-### 🤖 AI Shopping Assistant (ShopBot)
-
-| Feature                 | Details                                                       |
-| ----------------------- | ------------------------------------------------------------- |
-| Natural Language Search | "Show me red sneakers under ₹3000"                            |
-| Product Q&A             | "What's the best laptop for video editing?"                   |
-| Cart Assistance         | "Add the first result to my cart"                             |
-| MCP Backend             | Claude API with Model Context Protocol for product tool calls |
-| Conversation Memory     | Full session-scoped chat history                              |
-| Typing Indicators       | Real-time streaming feel                                      |
 
 ### 👤 User Features
 
@@ -113,23 +102,12 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 | Animation     | **Framer Motion**         | Declarative, powerful, accessible animations           |
 | Icons         | **Lucide React**          | Tree-shakeable, consistent icon set                    |
 
-### AI / Chatbot
-
-| Technology | Choice                           | Reason                                                        |
-| ---------- | -------------------------------- | ------------------------------------------------------------- |
-| LLM        | **Claude (Anthropic API)**       | Superior reasoning, tool use (MCP), and instruction following |
-| Protocol   | **Model Context Protocol (MCP)** | Structured tool definitions for product search, cart actions  |
-| Transport  | **SSE / Streaming**              | Real-time streaming response for better UX                    |
-
 ### Developer Tooling
 
-| Tool                               | Purpose                                                   |
-| ---------------------------------- | --------------------------------------------------------- |
-| **ESLint + Prettier**              | Code linting and consistent formatting                    |
-| **Husky + lint-staged**            | Pre-commit hooks to enforce quality                       |
-| **Vitest + React Testing Library** | Unit and component tests                                  |
-| **Storybook**                      | Component documentation and isolated development          |
-| **Path aliases**                   | `@components/`, `@hooks/`, `@store/` etc. via Vite config |
+| Tool             | Purpose                                                   |
+| ---------------- | --------------------------------------------------------- |
+| **ESLint**       | Code linting and consistency                              |
+| **Path aliases** | `@components/`, `@hooks/`, `@store/` etc. via Vite config |
 
 ---
 
@@ -155,7 +133,7 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 ┌──────────────────────▼──────────────────────────────────────┐
 │                   DATA LAYER                                │
 │  Mock JSON / FakeStore API / DummyJSON API                  │
-│  + Claude API + MCP Server (chatbot backend)                │
+│  + External API Integrations (DummyJSON, etc.)              │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -211,21 +189,7 @@ shopsphere/
 │   │   │   ├── components/
 │   │   │   └── store/
 │   │   │
-│   │   └── chatbot/               # AI Shopping Assistant
-│   │       ├── components/
-│   │       │   ├── ChatWidget.tsx  # Floating launcher button
-│   │       │   ├── ChatDrawer.tsx  # Full chat panel
-│   │       │   ├── ChatMessage.tsx # Individual message bubble
-│   │       │   ├── ProductCard.tsx # Inline product card in chat
-│   │       │   └── TypingDots.tsx  # Loading indicator
-│   │       ├── hooks/
-│   │       │   └── useChat.ts      # Chat state + Claude API integration
-│   │       ├── services/
-│   │       │   ├── claudeService.ts # Anthropic API client
-│   │       │   └── mcpTools.ts     # MCP tool definitions
-│   │       └── types/
-│   │           └── chat.types.ts
-│   │
+
 │   ├── pages/                     # Route-level page components
 │   │   ├── HomePage.tsx
 │   │   ├── ProductListingPage.tsx
@@ -239,9 +203,10 @@ shopsphere/
 │   │   └── NotFoundPage.tsx
 │   │
 │   ├── layouts/
-│   │   ├── RootLayout.tsx         # Header + Footer + ChatWidget wrapper
+│   │   ├── RootLayout.tsx         # Header + Footer wrapper
 │   │   ├── AuthLayout.tsx         # Centered auth pages
 │   │   └── CheckoutLayout.tsx     # Minimal header, no footer
+
 │   │
 │   ├── components/                # Shared, generic UI components
 │   │   ├── ui/
@@ -293,101 +258,12 @@ shopsphere/
 │       ├── array.ts               # groupBy, sortBy, chunk
 │       └── validation.ts          # Shared Zod schemas
 │
-├── .husky/                        # Git hooks
-│   └── pre-commit                 # lint-staged
-│
-├── .storybook/                    # Storybook config
-├── vitest.config.ts
 ├── vite.config.ts                 # Path aliases, build config
 ├── tsconfig.json
 ├── .eslintrc.json
-├── .prettierrc
 └── README.md
-```
-
----
-
-## 🤖 AI Chatbot — ShopBot
-
-ShopBot is embedded as a floating button at the bottom-right of every page. It uses the **Claude API with Model Context Protocol (MCP)** to give the chatbot structured access to product data and cart actions.
-
-### How It Works
 
 ```
-User types message
-       │
-       ▼
-claudeService.ts sends message + conversation history + MCP tool definitions
-       │
-       ▼
-Claude decides whether to answer directly OR call an MCP tool
-       │
-    ┌──┴──┐
-    │     │
-    ▼     ▼
-Direct  Tool call (e.g. searchProducts, addToCart, getProductById)
-answer  │
-    │   ▼
-    │  mcpTools.ts executes the tool locally (hits mock API)
-    │   │
-    │   ▼
-    │  Tool result fed back into Claude
-    │   │
-    │   ▼
-    └──►Claude formulates final response
-           │
-           ▼
-    Streamed back to UI
-```
-
-### MCP Tools Defined
-
-```typescript
-// mcpTools.ts
-const tools = [
-  {
-    name: "search_products",
-    description: "Search for products by name, category, or description",
-    input_schema: {
-      query: string,
-      category?: string,
-      min_price?: number,
-      max_price?: number,
-      min_rating?: number,
-      in_stock_only?: boolean,
-      limit?: number,
-    }
-  },
-  {
-    name: "get_product_detail",
-    description: "Get full details of a specific product by ID",
-    input_schema: { product_id: string }
-  },
-  {
-    name: "add_to_cart",
-    description: "Add a product to the user's shopping cart",
-    input_schema: { product_id: string, quantity: number, variant_id?: string }
-  },
-  {
-    name: "get_cart",
-    description: "Get the user's current cart contents",
-    input_schema: {}
-  },
-  {
-    name: "get_categories",
-    description: "List all available product categories",
-    input_schema: {}
-  },
-]
-```
-
-### Example Conversations
-
-> **User:** "Show me wireless headphones under ₹5000 with at least 4 stars"
-> **ShopBot:** _(calls `search_products`)_ → "Here are 3 options that match…" _(renders product cards inline)_
-
-> **User:** "Add the second one to my cart"
-> **ShopBot:** _(calls `add_to_cart`)_ → "Done! Added Sony WH-1000XM4 to your cart. You now have 1 item. Ready to checkout?"
 
 ---
 
@@ -407,7 +283,6 @@ Used for state that belongs to the client and never needs server synchronization
 | `uiStore`         | Drawer open/close, active modal, theme             |
 | `filterStore`     | Active filter values (resets on navigation)        |
 | `comparisonStore` | Products in comparison tray                        |
-| `chatStore`       | Chat open state, message history                   |
 
 ### Layer 2: Server State → TanStack Query
 
@@ -420,20 +295,6 @@ Used for everything fetched from an API — caches, deduplicates, and automatica
 | `['reviews', productId]` | Reviews for a product                       |
 | `['categories']`         | All categories (long cache, rarely changes) |
 | `['orders', userId]`     | User's order history                        |
-
-**Mutation example (add review):**
-
-```typescript
-const mutation = useMutation({
-  mutationFn: reviewService.addReview,
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["reviews", productId] });
-    toast.success("Review submitted!");
-  },
-});
-```
-
----
 
 ## 🏆 Code Quality & Scalability Standards
 
@@ -566,12 +427,8 @@ App runs at `http://localhost:5173`
 npm run dev          # Start dev server
 npm run build        # Production build
 npm run preview      # Preview production build locally
-npm run test         # Run Vitest tests
-npm run test:ui      # Vitest with browser UI
 npm run lint         # ESLint
-npm run format       # Prettier
-npm run storybook    # Launch Storybook
-npm run type-check   # tsc --noEmit
+
 ```
 
 ---
@@ -581,18 +438,7 @@ npm run type-check   # tsc --noEmit
 ```bash
 # .env.local
 
-# Anthropic Claude API key (for ShopBot chatbot)
-VITE_ANTHROPIC_API_KEY=sk-ant-...
 
-# Optional: custom API base URL if swapping out mock data
-VITE_API_BASE_URL=https://dummyjson.com
-
-# Feature flags
-VITE_ENABLE_CHATBOT=true
-VITE_ENABLE_COMPARISON=true
-```
-
-> ⚠️ `VITE_ANTHROPIC_API_KEY` is only needed for the AI chatbot feature. If not set, ShopBot falls back to a rule-based mode with keyword matching.
 
 ---
 
@@ -614,9 +460,7 @@ Tailwind is excellent for prototyping but produces verbose JSX, couples styling 
 
 Flat `components/` folders collapse under complexity. Feature-sliced keeps everything related to "products" in one place — easy to onboard new engineers ("all product stuff is in `/features/products`") and safe to delete an entire feature without hunting across the codebase.
 
-### Why MCP for the chatbot?
 
-Model Context Protocol gives Claude structured, typed access to application functions. Without MCP, the chatbot would need to parse free-text responses and guess what action to take. With MCP, tool invocations are typed, validated, and explicit — the difference between `eval()` and a proper function call.
 
 ---
 
@@ -624,7 +468,7 @@ Model Context Protocol gives Claude structured, typed access to application func
 
 With more time or in production:
 
-1. **Real backend** — Move MCP tools server-side (Next.js API routes or a Node.js service) so the Anthropic API key is never exposed to the browser
+1. **Real backend** — Move all business logic and API orchestration to a secure Node.js backend
 2. **Authentication** — Integrate a real auth provider (Clerk, Auth0, or NextAuth)
 3. **Infinite scroll** — Add as an alternative to pagination, toggle via user preference
 4. **Real payment** — Stripe integration (Elements for PCI compliance)
@@ -644,63 +488,51 @@ With more time or in production:
 - [x] Design token system + global SCSS
 - [x] Routing setup with nested layouts
 - [x] Mock data layer (products, categories, reviews, users)
-- [ ] Header with search, cart icon, user menu
-- [ ] Footer with links and newsletter signup
-- [ ] Home page — hero, featured categories, trending products, banner
-- [ ] Product Listing page — grid, skeleton loaders, empty state
-- [ ] Filter sidebar — category, price range, brand, rating, in-stock
-- [ ] Sort dropdown
-- [ ] Pagination component with page size selector
-- [ ] Product Detail page — image gallery, variant picker, quantity selector
-- [ ] Related products carousel
-- [ ] Reviews section with submit form
-- [ ] Product Comparison (up to 4 products)
-- [ ] Cart drawer (slide-in panel)
-- [ ] Cart page (full view)
-- [ ] Wishlist page
-- [ ] Multi-step Checkout (Address → Shipping → Payment → Review)
-- [ ] Form validation with Zod schemas
-- [ ] Order Confirmation page
-- [ ] Login + Register pages
-- [ ] User Profile page
-- [ ] Order History page
+- [x] Header with search, cart icon, user menu
+- [x] Footer with links and newsletter signup
+- [x] Home page — hero, featured categories, trending products, banner
+- [x] Product Listing page — grid, skeleton loaders, empty state
+- [x] Filter sidebar — category, price range, brand, rating, in-stock
+- [x] Sort dropdown
+- [x] Pagination component with page size selector
+- [x] Product Detail page — image gallery, variant picker, quantity selector
+- [x] Related products carousel
+- [x] Reviews section with submit form
+- [x] Product Comparison (up to 4 products)
+- [x] Cart drawer (slide-in panel)
+- [x] Cart page (full view)
+- [x] Wishlist page
+- [x] Multi-step Checkout (Address → Shipping → Payment → Review)
+- [x] Form validation with Zod schemas
+- [x] Order Confirmation page
+- [x] Login + Register pages
+- [x] User Profile page
+- [x] Order History page
 
-### AI Chatbot (ShopBot)
 
-- [ ] Floating chat button (bottom-right)
-- [ ] Chat drawer with message history
-- [ ] Claude API integration (streaming)
-- [ ] MCP tool definitions (searchProducts, getProduct, addToCart, getCart)
-- [ ] Tool execution layer
-- [ ] Inline product cards in chat responses
-- [ ] Fallback mode (keyword-based, no API key required)
-- [ ] Conversation persistence (sessionStorage)
-- [ ] "What can you help me with?" onboarding message
+
 
 ### Quality & DX
 
-- [ ] ESLint + Prettier config
-- [ ] Husky + lint-staged pre-commit hook
-- [ ] Vitest setup + sample tests
-- [ ] Storybook setup + Button/Input/Badge stories
-- [ ] Path aliases in vite.config.ts and tsconfig.json
-- [ ] Error boundary
-- [ ] 404 page
-- [ ] Toast notification system
-- [ ] Global loading state (NProgress bar)
-- [ ] Responsive design (mobile breakpoints)
-- [ ] Accessibility audit pass
+- [x] ESLint config
+- [x] Path aliases in vite.config.ts and tsconfig.json
+- [x] Error boundary
+- [x] 404 page
+- [x] Toast notification system
+- [x] Responsive design (mobile breakpoints)
+
 
 ### Nice-to-Have
 
-- [ ] Dark mode toggle
-- [ ] Recently viewed products (localStorage)
-- [ ] Discount/coupon code in checkout
-- [ ] Product image zoom on hover
-- [ ] Search suggestions / autocomplete dropdown
-- [ ] Share product button (Web Share API)
-- [ ] Print-friendly order summary
-- [ ] PWA manifest + service worker
+- [x] Dark mode toggle
+- [x] Recently viewed products (localStorage)
+- [x] Discount/coupon code in checkout
+- [x] Product image zoom on hover
+- [x] Search suggestions / autocomplete dropdown
+- [x] Share product button (Web Share API)
+- [x] Print-friendly order summary
+- [x] PWA manifest + service worker
+
 
 ---
 
@@ -711,3 +543,4 @@ MIT — free to use for assessment and educational purposes.
 ---
 
 _Built with ❤️ for the ShopSphere Frontend SDE-2 Assessment._
+```

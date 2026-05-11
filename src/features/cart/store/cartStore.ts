@@ -9,18 +9,23 @@ export interface CartItem {
 
 interface CartStore {
   items: CartItem[];
+  coupon: { code: string; discount: number } | null;
   addItem: (product: Product, quantity?: number) => void;
   removeItem: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
+  applyCoupon: (code: string) => boolean;
+  removeCoupon: () => void;
   getCartTotal: () => number;
   getCartCount: () => number;
+  getDiscountAmount: () => number;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      coupon: null,
       addItem: (product, quantity = 1) => {
         set((state) => {
           const existingItem = state.items.find((item) => item.product.id === product.id);
@@ -49,11 +54,26 @@ export const useCartStore = create<CartStore>()(
         }));
       },
       clearCart: () => set({ items: [] }),
+      applyCoupon: (code) => {
+        if (code.toUpperCase() === 'SAVE10') {
+          set({ coupon: { code: 'SAVE10', discount: 0.1 } });
+          return true;
+        }
+        return false;
+      },
+      removeCoupon: () => set({ coupon: null }),
       getCartTotal: () => {
-        return get().items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+        const subtotal = get().items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+        const discount = get().getDiscountAmount();
+        return subtotal - discount;
       },
       getCartCount: () => {
         return get().items.reduce((count, item) => count + item.quantity, 0);
+      },
+      getDiscountAmount: () => {
+        const subtotal = get().items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+        const coupon = get().coupon;
+        return coupon ? subtotal * coupon.discount : 0;
       },
     }),
     {
@@ -61,3 +81,4 @@ export const useCartStore = create<CartStore>()(
     }
   )
 );
+

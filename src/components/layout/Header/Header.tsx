@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Search, User, Heart, X, Repeat } from 'lucide-react';
 import { useComparisonStore } from '@features/products/store/comparisonStore';
@@ -6,8 +6,12 @@ import { Button } from '@components/ui/Button/Button';
 import { useCartStore } from '@features/cart/store/cartStore';
 import { useUiStore } from '@store/uiStore';
 import { useAuthStore } from '@features/auth/store/authStore';
-import styles from './Header.module.scss';
 import { ROUTES } from '@/constants/routes';
+import { ThemeToggle } from '@components/ui/ThemeToggle/ThemeToggle';
+import { productApi } from '@features/products/services/productApi';
+import styles from './Header.module.scss';
+
+
 
 export const Header: React.FC = () => {
   const cartCount = useCartStore((state) => state.getCartCount());
@@ -18,6 +22,23 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (searchValue.length > 2) {
+      const timeoutId = setTimeout(async () => {
+        try {
+          const response = await productApi.searchProducts(searchValue);
+          setSuggestions(response.products.slice(0, 5));
+        } catch (error) {
+          console.error('Failed to fetch suggestions', error);
+        }
+      }, 300);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setSuggestions([]);
+    }
+  }, [searchValue]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,8 +46,10 @@ export const Header: React.FC = () => {
       navigate(`${ROUTES.PRODUCTS}?q=${encodeURIComponent(searchValue.trim())}`);
       setSearchOpen(false);
       setSearchValue('');
+      setSuggestions([]);
     }
   };
+
 
   return (
     <header className={styles.header}>
@@ -44,20 +67,38 @@ export const Header: React.FC = () => {
 
         <div className={styles.actions}>
           {searchOpen ? (
-            <form onSubmit={handleSearch} className={styles.searchForm}>
-              <Search size={16} className={styles.searchFormIcon} />
-              <input
-                autoFocus
-                placeholder="Search products..."
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                className={styles.searchFormInput}
-              />
-              <button type="button" onClick={() => { setSearchOpen(false); setSearchValue(''); }} className={styles.searchClose}>
-                <X size={16} />
-              </button>
-            </form>
+            <div style={{ position: 'relative' }}>
+              <form onSubmit={handleSearch} className={styles.searchForm}>
+                <Search size={16} className={styles.searchFormIcon} />
+                <input
+                  autoFocus
+                  placeholder="Search products..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  className={styles.searchFormInput}
+                />
+                <button type="button" onClick={() => { setSearchOpen(false); setSearchValue(''); setSuggestions([]); }} className={styles.searchClose}>
+                  <X size={16} />
+                </button>
+              </form>
+              {suggestions.length > 0 && (
+                <div className={styles.suggestions}>
+                  {suggestions.map((p) => (
+                    <Link 
+                      key={p.id} 
+                      to={`${ROUTES.PRODUCTS}/${p.id}`} 
+                      className={styles.suggestionItem}
+                      onClick={() => { setSearchOpen(false); setSearchValue(''); setSuggestions([]); }}
+                    >
+                      <img src={p.thumbnail} alt="" />
+                      <span>{p.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
+
             <Button variant="ghost" size="sm" aria-label="Search" onClick={() => setSearchOpen(true)}>
               <Search size={20} />
             </Button>
@@ -69,7 +110,9 @@ export const Header: React.FC = () => {
           <Button variant="ghost" size="sm" aria-label="Wishlist" onClick={() => navigate(ROUTES.WISHLIST)}>
             <Heart size={20} />
           </Button>
+          <ThemeToggle />
           <Button variant="ghost" size="sm" aria-label="Cart" onClick={openCart} className={styles.cartBtn}>
+
             <ShoppingBag size={20} />
             {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
           </Button>

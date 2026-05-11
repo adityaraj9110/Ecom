@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Package, ArrowRight } from 'lucide-react';
+import { CheckCircle, Package, ArrowRight, Printer } from 'lucide-react';
 import { Button } from '@components/ui/Button/Button';
 
 export const OrderConfirmationPage: React.FC = () => {
@@ -42,10 +42,12 @@ export const OrderConfirmationPage: React.FC = () => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }} className="no-print">
         <Link to="/products"><Button variant="outline" rightIcon={<ArrowRight size={16} />}>Continue Shopping</Button></Link>
+        <Button variant="outline" leftIcon={<Printer size={16} />} onClick={() => window.print()}>Print Receipt</Button>
         <Link to="/"><Button>Back to Home</Button></Link>
       </div>
     </div>
   );
 };
+
