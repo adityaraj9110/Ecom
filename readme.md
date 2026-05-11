@@ -419,43 +419,6 @@ npm run lint         # ESLint
 
 ```
 
----
+```
 
-## 🔑 Environment Variables
-
-```bash
-# .env.local
-
-
-
----
-
-## 🎨 Design Decisions
-
-### Why Zustand over Redux?
-
-Redux Toolkit is excellent but introduces significant ceremony — slices, reducers, selectors, thunks. For a frontend-only app without a large team needing strict action-logging discipline, Zustand gives 90% of the structure with 30% of the boilerplate. Each store is a self-contained module, easy to unit-test.
-
-### Why TanStack Query for server state?
-
-Managing async state manually (loading, error, data, refetching, caching) is a known footgun. React Query makes these problems disappear declaratively. Combined with Zustand for client state, there's a clear mental model: _"Is this data fetched from somewhere? Use Query. Is this local UI state? Use Zustand."_
-
-### Why CSS Modules + SCSS instead of Tailwind?
-
-Tailwind is excellent for prototyping but produces verbose JSX, couples styling to markup, and makes complex responsive layouts harder to read. CSS Modules offer full encapsulation with zero runtime cost. SCSS adds mixins, nesting, and the token system. The styling is also easier to read and understand intent.
-
-### Why Feature-Sliced Architecture?
-
-Flat `components/` folders collapse under complexity. Feature-sliced keeps everything related to "products" in one place — easy to onboard new engineers ("all product stuff is in `/features/products`") and safe to delete an entire feature without hunting across the codebase.
-
-
----
-
-## 📄 License
-
-MIT — free to use for assessment and educational purposes.
-
----
-
-_Built with ❤️ for the ShopSphere Frontend SDE-2 Assessment._
 ```
