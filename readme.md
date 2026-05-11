@@ -25,8 +25,8 @@
 
 ## 🚀 Live Demo
 
-> **[→ View Live on Vercel](#)** _(link after deployment)_
-> **[→ GitHub Repository](#)** _(link after push)_
+> **[→ View Live on Vercel](#)** _(https://shopsphereeee.netlify.app/)_
+> **[→ GitHub Repository](#)** _(https://github.com/adityaraj9110/Ecom)_
 
 ---
 
@@ -40,7 +40,7 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 
 - Authentication simulation (login/register with persisted session)
 - Responsive design with accessibility (WCAG AA) baked in from the start
-- Clean, layered architecture that mirrors how a real production team would build this
+- Clean, layered architecture
 
 ---
 
@@ -298,7 +298,7 @@ Used for everything fetched from an API — caches, deduplicates, and automatica
 
 ## 🏆 Code Quality & Scalability Standards
 
-This project is built to be **maintained by a team**, not just run by one person. Every decision optimizes for long-term readability and change-safety.
+This project is built to be **maintained by me**. Every decision optimizes for long-term readability and change-safety.
 
 ### TypeScript Strictness
 
@@ -373,7 +373,6 @@ This means internals can be freely refactored without touching other features.
 
 - Route-level code splitting with `React.lazy` + `Suspense`
 - All images lazy-loaded with `loading="lazy"` and explicit `width`/`height`
-- Product list virtualized with `react-virtual` for 1000+ items
 - Debounced search, memoized selectors, stable references
 
 ### Accessibility
@@ -459,79 +458,6 @@ Tailwind is excellent for prototyping but produces verbose JSX, couples styling 
 ### Why Feature-Sliced Architecture?
 
 Flat `components/` folders collapse under complexity. Feature-sliced keeps everything related to "products" in one place — easy to onboard new engineers ("all product stuff is in `/features/products`") and safe to delete an entire feature without hunting across the codebase.
-
-
-
----
-
-## 🔮 What I Would Do Differently
-
-With more time or in production:
-
-1. **Real backend** — Move all business logic and API orchestration to a secure Node.js backend
-2. **Authentication** — Integrate a real auth provider (Clerk, Auth0, or NextAuth)
-3. **Infinite scroll** — Add as an alternative to pagination, toggle via user preference
-4. **Real payment** — Stripe integration (Elements for PCI compliance)
-5. **Image optimization** — Next.js `<Image>` or Cloudinary for responsive images + WebP
-6. **E2E tests** — Playwright tests covering critical checkout and cart flows
-7. **i18n** — react-i18next for multi-language + currency support
-8. **PWA** — Service worker for offline product browsing and cart persistence
-9. **Analytics** — PostHog for funnel analysis, especially cart abandonment
-
----
-
-## ✅ TODO / Feature Roadmap
-
-### Core Features
-
-- [x] Project scaffolding (Vite + React + TypeScript)
-- [x] Design token system + global SCSS
-- [x] Routing setup with nested layouts
-- [x] Mock data layer (products, categories, reviews, users)
-- [x] Header with search, cart icon, user menu
-- [x] Footer with links and newsletter signup
-- [x] Home page — hero, featured categories, trending products, banner
-- [x] Product Listing page — grid, skeleton loaders, empty state
-- [x] Filter sidebar — category, price range, brand, rating, in-stock
-- [x] Sort dropdown
-- [x] Pagination component with page size selector
-- [x] Product Detail page — image gallery, variant picker, quantity selector
-- [x] Related products carousel
-- [x] Reviews section with submit form
-- [x] Product Comparison (up to 4 products)
-- [x] Cart drawer (slide-in panel)
-- [x] Cart page (full view)
-- [x] Wishlist page
-- [x] Multi-step Checkout (Address → Shipping → Payment → Review)
-- [x] Form validation with Zod schemas
-- [x] Order Confirmation page
-- [x] Login + Register pages
-- [x] User Profile page
-- [x] Order History page
-
-
-
-
-### Quality & DX
-
-- [x] ESLint config
-- [x] Path aliases in vite.config.ts and tsconfig.json
-- [x] Error boundary
-- [x] 404 page
-- [x] Toast notification system
-- [x] Responsive design (mobile breakpoints)
-
-
-### Nice-to-Have
-
-- [x] Dark mode toggle
-- [x] Recently viewed products (localStorage)
-- [x] Discount/coupon code in checkout
-- [x] Product image zoom on hover
-- [x] Search suggestions / autocomplete dropdown
-- [x] Share product button (Web Share API)
-- [x] Print-friendly order summary
-- [x] PWA manifest + service worker
 
 
 ---
