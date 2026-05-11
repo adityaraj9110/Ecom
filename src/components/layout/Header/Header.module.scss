@@ -1,0 +1,182 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color-base);
+  padding: var(--spacing-3) 0;
+}
+
+.container {
+  max-width: var(--max-width-container);
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+}
+
+.logo {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
+}
+
+.nav {
+  display: flex;
+  gap: var(--spacing-6);
+  align-items: center;
+
+  a {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-500);
+    transition: var(--transition-base);
+    padding: var(--spacing-1) 0;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  .active {
+    color: var(--color-primary);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.cartBtn {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-bold);
+  min-width: 17px;
+  height: 17px;
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--color-white);
+}
+
+/* Inline Search */
+.searchForm {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: var(--color-gray-50);
+  border: 1px solid var(--border-color-base);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.searchFormIcon {
+  position: absolute;
+  left: var(--spacing-2);
+  color: var(--color-gray-400);
+  pointer-events: none;
+}
+
+.searchFormInput {
+  padding: var(--spacing-2) var(--spacing-3) var(--spacing-2) var(--spacing-8);
+  border: none;
+  background: transparent;
+  font-size: var(--font-size-sm);
+  width: 200px;
+  outline: none;
+}
+
+.searchClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  padding: var(--spacing-2);
+
+  &:hover {
+    color: var(--color-gray-700);
+  }
+}
+
+/* User Dropdown */
+.userMenu {
+  position: relative;
+
+  &:hover .userDropdown {
+    display: flex;
+  }
+}
+
+.userDropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--border-color-base);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  flex-direction: column;
+  min-width: 180px;
+  padding: var(--spacing-2) 0;
+  z-index: 60;
+}
+
+.userName {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-800);
+  border-bottom: 1px solid var(--border-color-base);
+  margin-bottom: var(--spacing-1);
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-base);
+
+  &:hover {
+    background: var(--color-gray-50);
+    color: var(--color-primary);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .searchFormInput {
+    width: 140px;
+  }
+}
