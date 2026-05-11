@@ -442,7 +442,7 @@ Managing async state manually (loading, error, data, refetching, caching) is a k
 
 ### Why CSS Modules + SCSS instead of Tailwind?
 
-Tailwind is excellent for prototyping but produces verbose JSX, couples styling to markup, and makes complex responsive layouts harder to read. CSS Modules offer full encapsulation with zero runtime cost. SCSS adds mixins, nesting, and the token system. The styling is also easier for interviewers to read and understand intent.
+Tailwind is excellent for prototyping but produces verbose JSX, couples styling to markup, and makes complex responsive layouts harder to read. CSS Modules offer full encapsulation with zero runtime cost. SCSS adds mixins, nesting, and the token system. The styling is also easier to read and understand intent.
 
 ### Why Feature-Sliced Architecture?
 
