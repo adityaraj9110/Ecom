@@ -78,6 +78,15 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 | Order Tracking | Mock order status timeline                                   |
 | Notifications  | Toast system for all user actions                            |
 
+### 📱 Progressive Web App (PWA)
+
+| Feature         | Details                                                               |
+| --------------- | --------------------------------------------------------------------- |
+| Installable     | Full `manifest.webmanifest` support for "Add to Home Screen" on mobile |
+| Offline Mode    | `service-worker.js` caches core assets and product data               |
+| Fast Loading    | Instant subsequent loads via local cache (Cache-First strategy)        |
+
+
 ---
 
 ## 🧰 Tech Stack & Decisions
@@ -101,6 +110,8 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 | Design Tokens | **CSS Custom Properties** | Single source of truth for colors, spacing, typography |
 | Animation     | **Framer Motion**         | Declarative, powerful, accessible animations           |
 | Icons         | **Lucide React**          | Tree-shakeable, consistent icon set                    |
+| PWA           | **Manifest + SW**         | Mobile installable and offline capability               |
+
 
 ### Developer Tooling
 
@@ -152,7 +163,9 @@ ShopSphere is a production-grade e-commerce frontend that goes significantly bey
 ```
 shopsphere/
 ├── public/
-│   └── assets/                    # Static assets, favicon, OG images
+│   ├── assets/                    # Static assets, favicon, OG images
+│   ├── manifest.webmanifest       # PWA manifest for mobile support
+│   └── service-worker.js          # Offline caching logic
 │
 ├── src/
 │   ├── app/
