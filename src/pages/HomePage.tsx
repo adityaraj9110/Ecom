@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShoppingBag, Tag, Truck, Shield } from 'lucide-react';
 import { useProducts, useCategories } from '@features/products/hooks/useProducts';
 import { ProductCard } from '@features/products/components/ProductCard';
 import { ProductCardSkeleton } from '@components/ui/Skeleton/Skeleton';
 import { Button } from '@components/ui/Button/Button';
+import { ROUTES } from '@/constants/routes';
 import styles from './HomePage.module.scss';
 
 export const HomePage: React.FC = () => {
   const { data: productsData, isLoading: productsLoading } = useProducts(0, 8);
+  const { data: heroProductsData } = useProducts(0, 5);
   const { data: categories } = useCategories();
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (heroProductsData?.products && heroProductsData.products.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % heroProductsData.products.length);
+      }, 4000);
+      return () => clearInterval(interval);
+    }
+  }, [heroProductsData]);
+
+  const heroProducts = heroProductsData?.products || [];
 
   return (
     <>
@@ -23,21 +38,40 @@ export const HomePage: React.FC = () => {
               Browse thousands of items across every category.
             </p>
             <div className={styles.heroBtns}>
-              <Link to="/products">
+              <Link to={ROUTES.PRODUCTS}>
                 <Button size="lg" rightIcon={<ArrowRight size={18} />}>Shop Now</Button>
               </Link>
-              <Link to="/categories">
+              <Link to={ROUTES.CATEGORIES}>
                 <Button variant="outline" size="lg">Browse Categories</Button>
               </Link>
             </div>
           </div>
           <div className={styles.heroImage}>
-            <div className={styles.heroImagePlaceholder}>
-              <ShoppingBag size={80} strokeWidth={1} />
-            </div>
+            {heroProducts.length > 0 ? (
+              <div className={styles.carousel}>
+                {heroProducts.map((product, index) => (
+                  <Link 
+                    key={product.id} 
+                    to={`${ROUTES.PRODUCTS}/${product.id}`}
+                    className={`${styles.carouselItem} ${index === currentSlide ? styles.active : ''}`}
+                  >
+                    <img src={product.thumbnail} alt={product.title} className={styles.carouselImage} />
+                    <div className={styles.carouselInfo}>
+                      <h3>{product.title}</h3>
+                      <p>${product.price}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.heroImagePlaceholder}>
+                <ShoppingBag size={80} strokeWidth={1} />
+              </div>
+            )}
           </div>
         </div>
       </section>
+
 
       {/* Featured Categories */}
       <section className={styles.section}>

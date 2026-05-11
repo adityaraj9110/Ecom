@@ -7,6 +7,7 @@ import { useCartStore } from '@features/cart/store/cartStore';
 import { useUiStore } from '@store/uiStore';
 import { useAuthStore } from '@features/auth/store/authStore';
 import styles from './Header.module.scss';
+import { ROUTES } from '@/constants/routes';
 
 export const Header: React.FC = () => {
   const cartCount = useCartStore((state) => state.getCartCount());
@@ -21,7 +22,7 @@ export const Header: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim()) {
-      navigate(`/products?q=${encodeURIComponent(searchValue.trim())}`);
+      navigate(`${ROUTES.PRODUCTS}?q=${encodeURIComponent(searchValue.trim())}`);
       setSearchOpen(false);
       setSearchValue('');
     }
@@ -30,15 +31,15 @@ export const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link to="/" className={styles.logo}>
+        <Link to={ROUTES.HOME} className={styles.logo}>
           <ShoppingBag size={22} />
           <span>ShopSphere</span>
         </Link>
 
         <nav className={styles.nav}>
-          <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : ''}>Home</NavLink>
-          <NavLink to="/products" className={({ isActive }) => isActive ? styles.active : ''}>Products</NavLink>
-          <NavLink to="/categories" className={({ isActive }) => isActive ? styles.active : ''}>Categories</NavLink>
+          <NavLink to={ROUTES.HOME} end className={({ isActive }) => isActive ? styles.active : ''}>Home</NavLink>
+          <NavLink to={ROUTES.PRODUCTS} className={({ isActive }) => isActive ? styles.active : ''}>Products</NavLink>
+          <NavLink to={ROUTES.CATEGORIES} className={({ isActive }) => isActive ? styles.active : ''}>Categories</NavLink>
         </nav>
 
         <div className={styles.actions}>
@@ -61,11 +62,11 @@ export const Header: React.FC = () => {
               <Search size={20} />
             </Button>
           )}
-          <Button variant="ghost" size="sm" aria-label="Comparison" onClick={() => navigate('/compare')} className={styles.cartBtn}>
+          <Button variant="ghost" size="sm" aria-label="Comparison" onClick={() => navigate(ROUTES.COMPARE)} className={styles.cartBtn}>
             <Repeat size={20} />
             {compareCount > 0 && <span className={styles.badge} style={{ background: 'var(--color-info)' }}>{compareCount}</span>}
           </Button>
-          <Button variant="ghost" size="sm" aria-label="Wishlist" onClick={() => navigate('/wishlist')}>
+          <Button variant="ghost" size="sm" aria-label="Wishlist" onClick={() => navigate(ROUTES.WISHLIST)}>
             <Heart size={20} />
           </Button>
           <Button variant="ghost" size="sm" aria-label="Cart" onClick={openCart} className={styles.cartBtn}>
@@ -74,17 +75,17 @@ export const Header: React.FC = () => {
           </Button>
           {user ? (
             <div className={styles.userMenu}>
-              <Button variant="ghost" size="sm" aria-label="Account" onClick={() => navigate('/profile')}>
+              <Button variant="ghost" size="sm" aria-label="Account" onClick={() => navigate(ROUTES.PROFILE)}>
                 <User size={20} />
               </Button>
               <div className={styles.userDropdown}>
                 <span className={styles.userName}>{user.name}</span>
-                <Link to="/orders" className={styles.dropdownItem}>Order History</Link>
-                <button className={styles.dropdownItem} onClick={() => { logout(); navigate('/'); }}>Sign Out</button>
+                <Link to={ROUTES.ORDERS} className={styles.dropdownItem}>Order History</Link>
+                <button className={styles.dropdownItem} onClick={() => { logout(); navigate(ROUTES.HOME); }}>Sign Out</button>
               </div>
             </div>
           ) : (
-            <Button variant="ghost" size="sm" aria-label="Account" onClick={() => navigate('/login')}>
+            <Button variant="ghost" size="sm" aria-label="Account" onClick={() => navigate(ROUTES.LOGIN)}>
               <User size={20} />
             </Button>
           )}
@@ -93,3 +94,4 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+

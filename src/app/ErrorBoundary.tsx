@@ -10,6 +10,23 @@ interface State {
   error: Error | null;
 }
 
+
+const ErrorFallback: React.FC<{ error: Error | null; onReset: () => void }> = ({ error, onReset }) => {
+  return (
+    <div style={{ maxWidth: '500px', margin: '8rem auto', textAlign: 'center', padding: '0 1rem' }}>
+      <h1 style={{ fontSize: '3rem', color: 'var(--color-gray-200)', marginBottom: '1rem' }}>Oops</h1>
+      <h2 style={{ marginBottom: '0.5rem' }}>Something went wrong</h2>
+      <p style={{ color: 'var(--color-gray-500)', marginBottom: '2rem', fontSize: 'var(--font-size-sm)' }}>
+        {error?.message || 'An unexpected error occurred.'}
+      </p>
+      <Button onClick={onReset}>
+        Back to Home
+      </Button>
+    </div>
+  );
+};
+
+
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -24,22 +41,17 @@ export class ErrorBoundary extends Component<Props, State> {
     console.error('ErrorBoundary caught:', error, errorInfo);
   }
 
+  handleReset = () => {
+    this.setState({ hasError: false, error: null });
+    window.location.href = '/';
+  };
+
   render() {
     if (this.state.hasError) {
-      return (
-        <div style={{ maxWidth: '500px', margin: '8rem auto', textAlign: 'center', padding: '0 1rem' }}>
-          <h1 style={{ fontSize: '3rem', color: 'var(--color-gray-200)', marginBottom: '1rem' }}>Oops</h1>
-          <h2 style={{ marginBottom: '0.5rem' }}>Something went wrong</h2>
-          <p style={{ color: 'var(--color-gray-500)', marginBottom: '2rem', fontSize: 'var(--font-size-sm)' }}>
-            {this.state.error?.message || 'An unexpected error occurred.'}
-          </p>
-          <Button onClick={() => { this.setState({ hasError: false, error: null }); window.location.href = '/'; }}>
-            Back to Home
-          </Button>
-        </div>
-      );
+      return <ErrorFallback error={this.state.error} onReset={this.handleReset} />;
     }
 
     return this.props.children;
   }
 }
+
