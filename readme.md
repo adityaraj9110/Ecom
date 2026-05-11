@@ -25,7 +25,7 @@
 
 ## 🚀 Live Demo
 
-> **[→ View Live on Vercel](#)** _(https://shopsphereeee.netlify.app/)_
+> **[→ View Live on Netlify](#)** _(https://shopsphereeee.netlify.app/)_
 > **[→ GitHub Repository](#)** _(https://github.com/adityaraj9110/Ecom)_
 
 ---
@@ -211,32 +211,24 @@ shopsphere/
 │   ├── components/                # Shared, generic UI components
 │   │   ├── ui/
 │   │   │   ├── Button/
-│   │   │   ├── Input/
 │   │   │   ├── Modal/
 │   │   │   ├── Drawer/
 │   │   │   ├── Badge/
 │   │   │   ├── Skeleton/
 │   │   │   ├── Toast/
 │   │   │   ├── Pagination/
-│   │   │   ├── RangeSlider/
-│   │   │   ├── StarRating/
 │   │   │   └── EmptyState/
 │   │   └── layout/
 │   │       ├── Header/
 │   │       ├── Footer/
 │   │       ├── Sidebar/
-│   │       └── Breadcrumbs/
 │   │
 │   ├── hooks/                     # Shared, non-feature hooks
 │   │   ├── useDebounce.ts
-│   │   ├── useLocalStorage.ts
-│   │   ├── useIntersectionObserver.ts
-│   │   ├── useMediaQuery.ts
 │   │   └── useClickOutside.ts
 │   │
 │   ├── services/                  # Shared services
 │   │   ├── apiClient.ts           # Axios instance with interceptors
-│   │   └── mockData/              # JSON fixtures for all entities
 │   │
 │   ├── store/                     # Global app-level Zustand store
 │   │   └── uiStore.ts             # Sidebar open, theme, modal state
@@ -254,9 +246,6 @@ shopsphere/
 │   │
 │   └── utils/                     # Pure utility functions
 │       ├── currency.ts            # formatPrice, convertCurrency
-│       ├── string.ts              # slugify, truncate, capitalize
-│       ├── array.ts               # groupBy, sortBy, chunk
-│       └── validation.ts          # Shared Zod schemas
 │
 ├── vite.config.ts                 # Path aliases, build config
 ├── tsconfig.json
@@ -405,14 +394,14 @@ This means internals can be freely refactored without touching other features.
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/shopsphere.git
-cd shopsphere
+git clone https://github.com/adityaraj9110/Ecom.git
+cd Ecom
 
 # Install dependencies
 npm install
 
 # Set up environment variables
-cp .env.example .env.local
+cp .env.example .env.local (not needed)
 
 # Start development server
 npm run dev
