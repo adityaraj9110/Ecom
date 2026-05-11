@@ -2,7 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// https://vite.dev/config/
+
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -17,8 +18,8 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, './src/utils'),
       '@appTypes': path.resolve(__dirname, './src/types'),
       '@pages': path.resolve(__dirname, './src/pages'),
-      '@layouts': path.resolve(__dirname, './src/layouts'),
-    },
+      '@layouts': path.resolve(__dirname, './src/layouts')
+    }
   },
   css: {
     preprocessorOptions: {
@@ -26,5 +27,5 @@ export default defineConfig({
         additionalData: `@use "@styles/_tokens.scss" as *;`
       }
     }
-  }
+  },
 });

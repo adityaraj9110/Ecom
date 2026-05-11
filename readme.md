@@ -336,7 +336,7 @@ Prettier enforces formatting. Husky + lint-staged runs both on every commit — 
 Every non-trivial component:
 
 1. Has explicit TypeScript `Props` interface
-2. Exports a Storybook story covering happy path + edge cases
+2. Has clear responsibility and focused functionality
 3. Follows single responsibility — one clear job
 
 ### Custom Hook Pattern
